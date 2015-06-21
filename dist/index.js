@@ -66,13 +66,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _libI18N2 = _interopRequireDefault(_libI18N);
 
-	var _libTextTemplate = __webpack_require__(2);
-
-	var _libTextTemplate2 = _interopRequireDefault(_libTextTemplate);
-
 	exports['default'] = {
-	    I18N: _libI18N2['default'],
-	    TextTemplate: _libTextTemplate2['default']
+	    I18N: _libI18N2['default']
 	};
 	module.exports = exports['default'];
 
@@ -133,6 +128,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    }, {
+	        key: 'getMessages',
+
+	        /**
+	         * Returns a translated batch corresponding to the specified batch key. This
+	         * method caches the resulting objects.
+	         * 
+	         * @param locale
+	         *            the locale of the required translations
+	         * @param batchKey
+	         *            key of the batch
+	         * @param batch
+	         *            an optional batch of default messages and utility methods
+	         */
+	        value: function getMessages(locale, batchKey, batch) {
+	            var cacheKey = locale + ':' + batchKey;
+	            var cache = this._cache = this._cache || {};
+	            var result = cache[cacheKey];
+	            if (!result) {
+	                result = this.newMessages(locale, batchKey, batch);
+	                cache[cacheKey] = result;
+	            }
+	            return result;
+	        }
+	    }, {
+	        key: 'clearCache',
+
+	        /** 
+	         * Clears cache of translations used by the getMessages method.
+	         */
+	        value: function clearCache() {
+	            delete this._cache;
+	        }
+	    }, {
 	        key: 'newMessages',
 
 	        /**
@@ -168,10 +196,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }, {
 	        key: '_getTemplateFunction',
+
+	        /**
+	         * This method could be overloaded in subclasses to define another
+	         * templating.
+	         */
 	        value: function _getTemplateFunction(val) {
-	            var templ = TextTemplate.compile('' + message);
-	            return function () {
-	                return templ.apply(templ, arguments);
+	            return I18N.compileTextTemplate(val ? val + '' : '');
+	        }
+	    }], [{
+	        key: 'compileTextTemplate',
+
+	        /**
+	         * A very simple method compiling the specified text into a template
+	         * function. This function replaces variables in strings.
+	         */
+	        value: function compileTextTemplate(text) {
+	            var array = text.split(/\$\{\s*|\s*\}/gim);
+	            return function (obj) {
+	                var str = '';
+	                for (var i = 0; i < array.length; i++) {
+	                    str += (i % 2 === 0 ? array[i] : obj[array[i]]) || '';
+	                }
+	                return str;
 	            };
 	        }
 	    }]);
@@ -180,60 +227,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	})();
 
 	exports['default'] = I18N;
-	module.exports = exports['default'];
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	/**
-	 * A very simple (simplistic) library replacing variables in strings.
-	 */
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var TextTemplate = (function () {
-	    function TextTemplate() {
-	        _classCallCheck(this, TextTemplate);
-	    }
-
-	    _createClass(TextTemplate, null, [{
-	        key: 'compile',
-	        value: function compile(text) {
-	            text = text || '';
-	            var array = text.split(/\$\{|\}/);
-	            for (var i = 0; i < array.length; i++) {
-	                if (i % 2 === 1) {
-	                    array[i] = array[i].replace(/^\s+|\s+$/, '');
-	                }
-	            }
-	            return function (obj) {
-	                var str = '';
-	                for (var i = 0; i < array.length; i++) {
-	                    if (i % 2 === 0) {
-	                        str += array[i];
-	                    } else {
-	                        var key = array[i];
-	                        var val = obj[key] || '';
-	                        str += val;
-	                    }
-	                }
-	                return str;
-	            };
-	        }
-	    }]);
-
-	    return TextTemplate;
-	})();
-
-	exports['default'] = TextTemplate;
 	module.exports = exports['default'];
 
 /***/ }
