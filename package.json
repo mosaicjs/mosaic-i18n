@@ -1,6 +1,6 @@
 {
   "name": "mosaic-i18n",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Message internationalization (i18n)",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "url": "https://github.com/mosaicjs/mosaic-i18n"
   },
   "keywords": [
-    "i18n", "internationalization"
+    "i18n",
+    "internationalization"
   ],
   "author": "Mikhail Kotelnikov <mikhail.kotelnikov@ubimix.com>",
   "license": "MIT",
