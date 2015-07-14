@@ -86,6 +86,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	var I18N = (function () {
+	    _createClass(I18N, null, [{
+	        key: 'compileTextTemplate',
+
+	        /**
+	         * A very simple method compiling the specified text into a template
+	         * function. This function replaces variables in strings.
+	         */
+	        value: function compileTextTemplate(text) {
+	            var array = text.split(/\$\{\s*|\s*\}/gim);
+	            return function (obj) {
+	                var str = '';
+	                for (var i = 0; i < array.length; i++) {
+	                    str += (i % 2 === 0 ? array[i] : obj[array[i]]) || '';
+	                }
+	                return str;
+	            };
+	        }
+	    }]);
+
 	    function I18N() {
 	        _classCallCheck(this, I18N);
 
@@ -203,23 +222,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        value: function _getTemplateFunction(val) {
 	            return I18N.compileTextTemplate(val ? val + '' : '');
-	        }
-	    }], [{
-	        key: 'compileTextTemplate',
-
-	        /**
-	         * A very simple method compiling the specified text into a template
-	         * function. This function replaces variables in strings.
-	         */
-	        value: function compileTextTemplate(text) {
-	            var array = text.split(/\$\{\s*|\s*\}/gim);
-	            return function (obj) {
-	                var str = '';
-	                for (var i = 0; i < array.length; i++) {
-	                    str += (i % 2 === 0 ? array[i] : obj[array[i]]) || '';
-	                }
-	                return str;
-	            };
 	        }
 	    }]);
 
