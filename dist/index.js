@@ -111,26 +111,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._locales = {};
 	    }
 
+	    /**
+	     * Registers translations for the specified locale and batch.
+	     * 
+	     * @param locale
+	     *            the name of the locale
+	     * @param batchKey
+	     *            the key of the message batch
+	     * @param translation
+	     *            an object containing message keys and the corresponding
+	     *            translations
+	     */
+
 	    _createClass(I18N, [{
 	        key: 'registerTranslations',
-
-	        /**
-	         * Registers translations for the specified locale and batch.
-	         * 
-	         * @param locale
-	         *            the name of the locale
-	         * @param batchKey
-	         *            the key of the message batch
-	         * @param translation
-	         *            an object containing message keys and the corresponding
-	         *            translations
-	         */
 	        value: function registerTranslations(locale, batchKey, translations) {
 	            var localeIndex = this._locales[locale] = this._locales[locale] || {};
 	            localeIndex[batchKey] = translations;
 	        }
-	    }, {
-	        key: 'unregisterTranslations',
 
 	        /**
 	         * Unregisters translations for the specified locale and batch.
@@ -140,14 +138,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @param batchKey
 	         *            the key of the message batch
 	         */
+	    }, {
+	        key: 'unregisterTranslations',
 	        value: function unregisterTranslations(locale, batchKey) {
 	            var localeIndex = this._locales[locale];
 	            if (localeIndex) {
 	                delete localeIndex[batchKey];
 	            }
 	        }
-	    }, {
-	        key: 'getMessages',
 
 	        /**
 	         * Returns a translated batch corresponding to the specified batch key. This
@@ -160,6 +158,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @param batch
 	         *            an optional batch of default messages and utility methods
 	         */
+	    }, {
+	        key: 'getMessages',
 	        value: function getMessages(locale, batchKey, batch) {
 	            var cacheKey = locale + ':' + batchKey;
 	            var cache = this._cache = this._cache || {};
@@ -170,17 +170,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return result;
 	        }
-	    }, {
-	        key: 'clearCache',
 
 	        /** 
 	         * Clears cache of translations used by the getMessages method.
 	         */
+	    }, {
+	        key: 'clearCache',
 	        value: function clearCache() {
 	            delete this._cache;
 	        }
-	    }, {
-	        key: 'newMessages',
 
 	        /**
 	         * Returns a translated batch corresponding to the specified batch key.
@@ -192,6 +190,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @param batch
 	         *            an optional batch of default messages and utility methods
 	         */
+	    }, {
+	        key: 'newMessages',
 	        value: function newMessages(locale, batchKey, batch) {
 	            batch = batch || {};
 	            var localeIndex = this._locales[locale] || {};
@@ -213,13 +213,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return result;
 	        }
-	    }, {
-	        key: '_getTemplateFunction',
 
 	        /**
 	         * This method could be overloaded in subclasses to define another
 	         * templating.
 	         */
+	    }, {
+	        key: '_getTemplateFunction',
 	        value: function _getTemplateFunction(val) {
 	            return I18N.compileTextTemplate(val ? val + '' : '');
 	        }
